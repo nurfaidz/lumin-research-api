@@ -9,7 +9,7 @@ import (
 
 var jwtKey = []byte(config.GetEnv("JWT_SECRET", "secret_key"))
 
-func GenerateToken(username string) (string, error) {
+func GenerateToken(username string) string {
 	expirationTime := time.Now().Add(60 * time.Minute)
 
 	claims := &jwt.RegisteredClaims{
@@ -19,5 +19,5 @@ func GenerateToken(username string) (string, error) {
 
 	token, _ := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString(jwtKey)
 
-	return token, nil
+	return token
 }
