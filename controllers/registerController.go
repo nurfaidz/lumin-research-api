@@ -6,7 +6,6 @@ import (
 	"project-research-gin/helpers"
 	"project-research-gin/models"
 	"project-research-gin/structs"
-	"structs"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,5 +31,33 @@ func Register(c *gin.Context) {
 	}
 
 	if err := database.DB.Create(&user).Error; err != nil {
+		if helpers.IsDuplicateEntryError(err) {
+			c.JSON(http.StatusConflict, structs.ErrorResponse{
+				Success: false,
+				Message: "Duplicate Entry Error",
+				Errors:  helpers.TranslateErrorMessage(err),
+			})
+		} else {
+			c.JSON(http.StatusInternalServerError, structs.ErrorResponse{
+				Success: false,
+				Message: "Failed to create user",
+				Errors:  helpers.TranslateErrorMessage(err),
+			})
+		}
+
+		return
 	}
+
+	c.JSON(http.StatusCreated, structs.SuccessResponse{
+		Success: true,
+		Message: "User created successfully",
+		Data: structs.UserResponse{
+			Id:        user.Id,
+			Name:      user.Name,
+			Username:  user.Username,
+			Email:     user.Email,
+			CreatedAt: user.CreatedAt.Format("2006-01-02 15:04:05"),
+			UpdatedAt: user.UpdatedAt.Format("2006-01-02 15:04:05"),
+		},
+	})
 }

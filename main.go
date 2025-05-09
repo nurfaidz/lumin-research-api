@@ -4,8 +4,7 @@ import (
 	"os"
 	"project-research-gin/config"
 	"project-research-gin/database"
-
-	"github.com/gin-gonic/gin"
+	"project-research-gin/routes"
 )
 
 func main() {
@@ -13,14 +12,7 @@ func main() {
 
 	database.InitDB()
 
-	router := gin.Default()
+	r := routes.SetupRoutes()
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello world",
-		})
-
-	})
-
-	router.Run(":" + os.Getenv("APP_PORT"))
+	r.Run(":" + os.Getenv("APP_PORT"))
 }

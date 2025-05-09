@@ -11,7 +11,7 @@ import (
 func TranslateErrorMessage(err error) map[string]string {
 	errorsMap := make(map[string]string)
 
-	if validationErrors, ok := err.(validator.ValidationErrors); ok {\
+	if validationErrors, ok := err.(validator.ValidationErrors); ok {
 		for _, fieldError := range validationErrors {
 			field := fieldError.Field()
 			switch fieldError.Tag() {
@@ -49,6 +49,6 @@ func TranslateErrorMessage(err error) map[string]string {
 	return errorsMap
 }
 
-func IsDuplicateEntry(err error) bool {
+func IsDuplicateEntryError(err error) bool {
 	return err != nil && strings.Contains(err.Error(), "Duplicate entry")
 }
