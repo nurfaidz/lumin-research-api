@@ -125,7 +125,10 @@ func UpdateUser(c *gin.Context) {
 	user.Name = req.Name
 	user.Username = req.Username
 	user.Email = req.Email
-	user.Password = helpers.HashPassword(req.Password)
+
+	if req.Password != "" {
+		user.Password = helpers.HashPassword(req.Password)
+	}
 
 	if err := database.DB.Save(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, structs.ErrorResponse{
