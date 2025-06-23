@@ -29,5 +29,12 @@ func SetupRoutes() *gin.Engine {
 	apiRouter.PUT("users/:id", middleware.AuthMiddleware(), controllers.UpdateUser)
 	apiRouter.DELETE("users/:id", middleware.AuthMiddleware(), controllers.DeleteUser)
 
+	// Route Category
+	apiRouter.GET("categories", middleware.AuthMiddleware(), controllers.FindCategory)
+	apiRouter.POST("categories", middleware.AuthMiddleware(), controllers.CreateCategory)
+	apiRouter.GET("categories/:id", middleware.AuthMiddleware(), controllers.FindCategoryById)
+	apiRouter.PUT("categories/:id", middleware.AuthMiddleware(), controllers.UpdateCategory)
+	apiRouter.DELETE("categories/:id", middleware.AuthMiddleware(), controllers.DeleteCategory)
+
 	return router
 }
